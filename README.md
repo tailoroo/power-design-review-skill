@@ -4,8 +4,16 @@
 
 ## 安装
 
+Linux / Mac：
+
 ```bash
 git clone https://github.com/tailoroo/power-design-review-skill.git ~/.claude/skills/power-design-review
+```
+
+Windows（PowerShell）：
+
+```powershell
+git clone https://github.com/tailoroo/power-design-review-skill.git $HOME/.claude/skills/power-design-review
 ```
 
 ## 使用
