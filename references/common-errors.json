@@ -1,0 +1,113 @@
+{
+  "terminology_errors": [
+    {
+      "wrong": "水文地址",
+      "correct": "水文地质",
+      "category": "土建",
+      "description": "地质勘查专业术语"
+    },
+    {
+      "wrong": "物证",
+      "correct": "校审",
+      "category": "综合",
+      "description": "校审流程术语"
+    },
+    {
+      "wrong": "站埴",
+      "correct": "站址",
+      "category": "综合",
+      "description": "变电站选址术语"
+    }
+  ],
+  "note": "站名一致性检查需要根据具体项目动态提取，不应预设站名错误",
+  "data_consistency_items": [
+    {
+      "item": "主变容量",
+      "unit": "MVA",
+      "check_locations": ["系统部分", "电气一次部分", "概算部分"],
+      "description": "主变压器容量应全文一致"
+    },
+    {
+      "item": "出线数量",
+      "unit": "回",
+      "check_locations": ["系统部分", "电气一次部分"],
+      "description": "各电压等级出线数量应一致"
+    },
+    {
+      "item": "无功补偿容量",
+      "unit": "Mvar",
+      "check_locations": ["系统部分", "电气一次部分"],
+      "description": "无功补偿容量应一致"
+    },
+    {
+      "item": "短路电流",
+      "unit": "kA",
+      "check_locations": ["系统部分", "电气一次部分"],
+      "description": "短路电流计算结果应一致"
+    }
+  ],
+  "outdated_standards": [
+    {
+      "code": "GB50011",
+      "name": "建筑抗震设计规范",
+      "old_version": "GB50011-2010（2016年版）",
+      "new_version": "GB/T 50011-2010（2024年版）",
+      "effective_date": "2024-08-01",
+      "category": "土建"
+    },
+    {
+      "code": "GB50016",
+      "name": "建筑设计防火规范",
+      "old_version": "GB50016-2014",
+      "new_version": "GB50016-2014（2018年版）",
+      "category": "土建"
+    },
+    {
+      "code": "DL/T5352",
+      "name": "高压配电装置设计规范",
+      "old_version": "DL/T 5352-2006",
+      "new_version": "DL/T 5352-2018",
+      "category": "电气一次"
+    },
+    {
+      "code": "DL/T5222",
+      "name": "导体和电器选择设计技术规定",
+      "old_version": "DL/T 5222-2005",
+      "new_version": "DL/T 5222-2021",
+      "category": "电气一次"
+    },
+    {
+      "code": "GB50227",
+      "name": "并联电容器装置设计规范",
+      "old_version": "GB 50227-2008",
+      "new_version": "GB 50227-2017",
+      "category": "电气一次"
+    }
+  ],
+  "format_noise_patterns": [
+    {
+      "pattern": "\\$[^$]+\\$",
+      "description": "LaTeX公式残留",
+      "example": "$220kV$",
+      "ignore": true
+    },
+    {
+      "pattern": "\\d(\\s+\\d)+",
+      "description": "空格分隔的数字",
+      "example": "2 2 0",
+      "ignore": true
+    },
+    {
+      "pattern": "错误！未定义书签",
+      "description": "Word转换错误",
+      "example": "错误！未定义书签",
+      "ignore": true
+    },
+    {
+      "pattern": "\\*\\d+",
+      "description": "测试数据",
+      "example": "*12345",
+      "ignore": true
+    }
+  ]
+}

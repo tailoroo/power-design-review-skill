@@ -1,0 +1,114 @@
+{
+  "team_name": "power-design-review-team",
+  "description": "输变电工程设计说明校审团队",
+  "architecture": {
+    "note": "@main 直接担任 coordinator（团队领导），只需启动3个子代理",
+    "main_role": "coordinator",
+    "subagents": 3
+  },
+  "members": [
+    {
+      "name": "general-checker",
+      "agent_type": "general-purpose",
+      "description": "通用检查员，负责规范版本、术语、数据一致性等",
+      "prompt_file": "agents/general-checker.md"
+    },
+    {
+      "name": "senior-engineer",
+      "agent_type": "general-purpose",
+      "description": "资深专业工程师，负责深度专业检查",
+      "prompt_file": "agents/senior-engineer.md"
+    },
+    {
+      "name": "reviewer",
+      "agent_type": "general-purpose",
+      "description": "审查员，审核其他角色输出，修正问题位置格式",
+      "prompt_file": "agents/reviewer.md"
+    }
+  ],
+  "workflow": {
+    "phase_0": {
+      "name": "初始化",
+      "executor": "@main",
+      "tasks": [
+        "创建团队",
+        "读取待检查文档",
+        "提取章节结构索引",
+        "并行启动子代理"
+      ]
+    },
+    "phase_1": {
+      "name": "并行检查",
+      "parallel": ["general-checker", "senior-engineer"]
+    },
+    "phase_2": {
+      "name": "审查反馈",
+      "sequential": ["reviewer"],
+      "reviewer_tasks": [
+        "问题位置格式修正（行号→章节编号）",
+        "发现遗漏",
+        "确认问题有效性"
+      ]
+    },
+    "phase_3": {
+      "name": "汇总输出",
+      "executor": "@main",
+      "tasks": [
+        "合并问题，去重",
+        "生成MD文档",
+        "生成Word文档"
+      ]
+    }
+  },
+  "communication": {
+    "message_types": [
+      {
+        "type": "task_assignment",
+        "from": "@main",
+        "to": ["general-checker", "senior-engineer"],
+        "purpose": "分配检查任务"
+      },
+      {
+        "type": "task_complete",
+        "from": ["general-checker", "senior-engineer"],
+        "to": "@main",
+        "purpose": "报告任务完成"
+      },
+      {
+        "type": "review_request",
+        "from": "@main",
+        "to": "reviewer",
+        "purpose": "请求审查"
+      },
+      {
+        "type": "review_feedback",
+        "from": "reviewer",
+        "to": "@main",
+        "purpose": "审查反馈（含修正后的问题清单）"
+      },
+      {
+        "type": "broadcast",
+        "from": "@main",
+        "to": "all",
+        "purpose": "全局通知"
+      }
+    ]
+  },
+  "output": {
+    "format": "markdown",
+    "table_columns": ["序号", "分类", "问题详细内容", "问题位置", "修改建议"],
+    "categories": ["系统", "电气一次", "电气二次", "土建", "水暖", "概算", "综合", "其他"],
+    "location_format": {
+      "correct": ["第3章第2.1节", "第2章表2-5"],
+      "incorrect": ["第3035行", "第6407行"],
+      "note": "reviewer负责将行号格式修正为章节编号格式"
+    }
+  },
+  "validation_checklist": [
+    "3个角色全部启动并返回结果",
+    "问题位置全部使用章节编号格式",
+    "MD文件已生成",
+    "Word文件已生成",
+    "问题清单完整（5列格式）"
+  ]
+}
